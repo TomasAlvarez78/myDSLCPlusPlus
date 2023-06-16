@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ int main(int argc, char* args []){
 
 	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
-	Entity platforms[5] = {
+	vector<Entity> platforms = {
 		Entity (0,(480 - (32 * 2)),grassTexture),
 		Entity (64,(480 - (32 * 2)),grassTexture),
 		Entity (128,(480 - (32 * 2)),grassTexture),
@@ -26,6 +27,12 @@ int main(int argc, char* args []){
 		Entity (256,(480 - (32 * 2)),grassTexture)
 	};
 
+	// This adds tempPlatform to vector and then deletes the Entity from memory
+	// Never seen it like this but ok 
+	{
+		Entity tempPlatform(320,(480 - (32 * 2)),grassTexture);
+		platforms.push_back(tempPlatform);
+	}
 	bool gameRunning = true;
 
 	SDL_Event event;
@@ -36,9 +43,12 @@ int main(int argc, char* args []){
 				gameRunning = false;
 			}
 			window.clear();
-			for (int i = 0; i < 5; ++i){
-				window.render(platforms[i]);
+
+			for (Entity& p : platforms)
+			{
+				window.render(p);
 			}
+
 			window.display();
 		}
 	}
