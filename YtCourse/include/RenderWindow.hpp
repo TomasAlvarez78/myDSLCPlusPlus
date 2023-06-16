@@ -3,15 +3,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include "Entity.hpp"
 
 using namespace std;
 
 class RenderWindow{
 	public:
-		RenderWindow(const char* title, int width, int height);
-		SDL_Texture* loadTexture(const char* filepath);
+		RenderWindow(const char* pTitle, int pWidth, int pHeight);
+		SDL_Texture* loadTexture(const char* pFilepath);
 		void display();
-		void render(SDL_Texture* texture);
+		void render(Entity& pEntity);
 		void clear();
 		void cleanUp();
 

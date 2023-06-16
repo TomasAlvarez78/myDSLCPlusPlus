@@ -7,7 +7,6 @@ using namespace std;
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
 
-
 int main(int argc, char* args []){
 	cout << "Hey" << endl;
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -15,9 +14,11 @@ int main(int argc, char* args []){
 	if (!IMG_Init(IMG_INIT_PNG))
 		cout << "ERROR IMG_INIT_PNG => " << SDL_GetError() << endl;
 
-	RenderWindow window("Game", 480, 480);
+	RenderWindow window("Game", 720, 480);
 
 	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
+
+	Entity platform0(0,(480 - (32 * 2)),grassTexture);
 
 	bool gameRunning = true;
 
@@ -29,7 +30,7 @@ int main(int argc, char* args []){
 				gameRunning = false;
 			}
 			window.clear();
-			window.render(grassTexture);
+			window.render(platform0);
 			window.display();
 		}
 	}
@@ -40,5 +41,3 @@ int main(int argc, char* args []){
 
 	return 0;
 }
-
- 

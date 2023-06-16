@@ -6,9 +6,14 @@
 
 class Entity{
 	public:
-		Entity( double x, double y, SDL_Texture* texture );
+		Entity( float pX, float pY, SDL_Texture* pTexture );
+		float getX();
+		float getY();
+		SDL_Texture* getTexture();
+		SDL_Rect getCurrentFrame();
+
 	private:
-		double x, y
+		float x, y;
 		SDL_Rect currentFrame;
 		SDL_Texture* texture;
 };
