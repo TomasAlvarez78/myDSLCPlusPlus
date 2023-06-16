@@ -18,19 +18,27 @@ int main(int argc, char* args []){
 
 	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
-	Entity platform0(0,(480 - (32 * 2)),grassTexture);
+	Entity platforms[5] = {
+		Entity (0,(480 - (32 * 2)),grassTexture),
+		Entity (64,(480 - (32 * 2)),grassTexture),
+		Entity (128,(480 - (32 * 2)),grassTexture),
+		Entity (192,(480 - (32 * 2)),grassTexture),
+		Entity (256,(480 - (32 * 2)),grassTexture)
+	};
 
 	bool gameRunning = true;
 
 	SDL_Event event;
 
 	while(gameRunning){
-		while( SDL_PollEvent(&event)){
-			if( event.type == SDL_QUIT){
+		while( SDL_PollEvent(&event) ){
+			if( event.type == SDL_QUIT ){
 				gameRunning = false;
 			}
 			window.clear();
-			window.render(platform0);
+			for (int i = 0; i < 5; ++i){
+				window.render(platforms[i]);
+			}
 			window.display();
 		}
 	}
