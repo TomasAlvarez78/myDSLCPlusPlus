@@ -46,8 +46,8 @@ void RenderWindow::render(Entity& pEntity){
 
 	SDL_Rect dst;
 	
-	dst.x = pEntity.getX();
-	dst.y = pEntity.getY();
+	dst.y = pEntity.getPos().getY();
+	dst.x = pEntity.getPos().getX();
 	dst.w = pEntity.getCurrentFrame().w * 2;
 	dst.h = pEntity.getCurrentFrame().h * 2;
 
