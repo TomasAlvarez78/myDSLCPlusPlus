@@ -1,26 +1,30 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <stdio.h>
 #include <vector>
 
 using namespace std;
 
 #include "RenderWindow.hpp"
 #include "Entity.hpp"
-#include "Math.hpp"
-
+#include "Utils.hpp"
 
 int main(int argc, char* args []){
 
-	int screenWidth = 1080;
-	int screenHeight = 480;
+	int screenWidth = 1280;
+	int screenHeight = 720;
 	int scale = 2;
 	int posHeight32Pix = screenHeight - (32 * scale);
 
 	bool gameRunning = true;
 	bool debug = true;
 
-	cout << "Hey" << endl;
+	if ( debug ){
+		printf("Starting program");
+		cout << endl;		
+	}
+
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 		cout << "ERROR SDL_INIT_VIDEO => " << SDL_GetError() << endl;
 	if (!IMG_Init(IMG_INIT_PNG))
@@ -35,27 +39,47 @@ int main(int argc, char* args []){
 	// Filling floor with ground_grass_1.png
 	for (int i = 0; i < screenWidth; i = i + 64)
 	{
-		debug ?	cout << i << endl : cout << "";
+		if ( debug ){
+			printf("Generated grass at (%d, %d)", i, posHeight32Pix);
+			cout << endl;	
+		}
 		Entity tempPlatform(Vector2f(i,posHeight32Pix),grassTexture);
 		platforms.push_back(tempPlatform);
 	}
 
 	SDL_Event event;
 
+	const float timeStep = 0.01f;
+	float accumulator = 0.0f;
+	float currentTime = utils::hireTimeInSeconds();
+
 	while(gameRunning){
-		while( SDL_PollEvent(&event) ){
-			if( event.type == SDL_QUIT ){
-				gameRunning = false;
-			}
-			window.clear();
 
-			for (Entity& p : platforms)
-			{
-				window.render(p);
-			}
+		float newTime = utils::hireTimeInSeconds();
+		float frameTime = newTime - currentTime;
+		currentTime = newTime;
+		accumulator  = utils::hireTimeInSeconds();
 
-			window.display();
+		while( accumulator >= timeStep){
+			while( SDL_PollEvent(&event) ){
+				if( event.type == SDL_QUIT ){
+					gameRunning = false;
+				}
+
+			}
+			accumulator -= timeStep;
 		}
+
+		const float alpha = accumulator / timeStep;
+
+		window.clear();
+
+		for (Entity& p : platforms)
+		{
+			window.render(p);
+		}
+
+		window.display();
 	}
 
 	window.cleanUp();
